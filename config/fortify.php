@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'username' => 'email',
+    'username' => 'name',
 
     'email' => 'email',
 
@@ -146,6 +146,7 @@ return [
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
+        // Features::rememberSession(),
         // Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
