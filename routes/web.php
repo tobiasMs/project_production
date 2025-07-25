@@ -18,6 +18,16 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::fallback(function () {
+    return response()->view('layouts.error.index', [], 404);
+});
+
+Route::get('/', function () {
+    if (!Auth::check()) {
+        return view('application.public.index');
+    }
+    return redirect('/dashboard');
+});
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -50,3 +60,5 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 });
+
+
