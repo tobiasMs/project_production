@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{{ asset('asset_public/assets/css/ionicons.min.css') }}">
     <!-- Main Style css -->
     <link href="{{ asset('asset_public/assets/css/style.css') }}" rel="stylesheet" type="text/css" media="all">
-    @yield('public-customstyle')
+    @stack('public-customstyle')
 </head>
 
 <body>
@@ -50,7 +50,7 @@
     <script type="text/javascript" src="{{ asset('asset_public/assets/js/plugins.js') }}"></script>
     <script type="text/javascript" src="{{ asset('asset_public/assets/js/menu.js') }}"></script>
     <script type="text/javascript" src="{{ asset('asset_public/assets/js/custom.js') }}"></script>
-    @yield('public-customscript')
+    @stack('public-customscript')
 </body>
 
 </html>

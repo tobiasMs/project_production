@@ -1,62 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Production System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="login-container">
-            <h2 class="text-center mb-4">Login Production System</h2>
+@extends('layouts.auth.app')
+@section('auth-title', 'LOGIN')
 
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-                <div class="mb-3">
-                    <label for="name" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="name" name="name" required autofocus>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                    <label class="form-check-label" for="remember">Remember me</label>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
-            </form>
-
-            <div class="mt-3 text-center">
-                <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
+@section('content')
+    <div class="col-sm-12">
+        <!-- Authentication card start -->
+        <form class="md-float-material form-material" method="POST" action="{{ route('login') }}">
+            @csrf <!-- Tambahkan CSRF token -->
+            <div class="text-center">
+                <img src="{{ asset('files/assets/images/logo.png') }}" alt="logo.png">
             </div>
-        </div>
+            <div class="auth-box card">
+                <div class="card-block">
+                    <div class="row m-b-20">
+                        <div class="col-md-12">
+                            <h3 class="text-center">Sign In</h3>
+                        </div>
+                    </div>
+                    <div class="form-group form-primary">
+                        <input type="text" id="name" name="name" class="form-control" required placeholder="Username"> <!-- Ubah name="text" ke name="email" -->
+                        <span class="form-bar"></span>
+                    </div>
+                    <div class="form-group form-primary">
+                        <input type="password" id="password" name="password" class="form-control" required placeholder="Password">
+                        <span class="form-bar"></span>
+                    </div>
+                    <div class="row m-t-25 text-left">
+                        <div class="col-12">
+                            <div class="checkbox-fade fade-in-primary d-">
+                                <label>
+                                    <input type="checkbox" name="remember"> <!-- Tambahkan remember me -->
+                                    <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                    <span class="text-inverse">Remember me</span>
+                                </label>
+                            </div>
+                            <div class="mt-3 text-center">
+                                <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-30">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign in</button> <!-- Ubah type="button" ke type="submit" -->
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="text-center">Sign In</h3>
+                            <h3 class="text-center">{{ now()->format('H:i:s') }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- end of form -->
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <!-- end of col-sm-12 -->
+@endsection

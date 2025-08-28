@@ -1,6 +1,7 @@
 @extends('application.public.layouts.app')
 @section('public-title', 'Halaman Dashboard')
 
+
 @section('public-content')
      <!-- Main Section-->
             <div class="hero-section app-hero">
