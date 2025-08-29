@@ -19,7 +19,7 @@
 			<li class="layer" data-depth="0.40"><img src="{{ asset('404/images/text-01.png') }}"></li>
 			<li class="layer" data-depth="0.10"><img src="{{ asset('404/images/monster-eyes-01.png') }}"></li>
 		</ul>
-		<a href="#" class="btn">Back to home</a>
+        <a href="{{ route('dashboard') }}" class="btn">Back to home</a>
 	</div>
 	<!-- Scripts -->
 	<script src="{{ asset('404/js/parallax.js') }}"></script>

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Application\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,9 +57,23 @@ Route::middleware('auth')->group(function () {
         return view('machine');
     })->middleware('can:view machine charts');
 
+    // Edit Profil
+    Route::prefix('profile')->name('profile.')->group(function(){
+        Route::get('/', [ProfileController::class, 'index'])->name('profile');
+        Route::put('/', [ProfileController::class, 'update'])->name('update');
+        Route::get('/show', [ProfileController::class, 'show'])->name('show');
+    });
+
+    // Insert Master LLL
+    Route::prefix('masterLLL')->name('lll.')->group(function(){
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::put('/', [ProfileController::class, 'update'])->name('update');
+        Route::destroy('/', [ProfileController::class, 'delete'])->name('delete');
+        Route::get('/show', [ProfileController::class, 'show'])->name('show');
+    });
+
     // Logout
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
 

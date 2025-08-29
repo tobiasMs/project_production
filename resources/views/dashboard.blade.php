@@ -1,10 +1,7 @@
 @extends('layouts.public.app')
 
-@section('title', 'ASDF')
+@section('title', 'DASHBOARD')
 
-@section('sidebar')
-
-@endsection
 
 @section('content')
     <!-- statustic-card start -->

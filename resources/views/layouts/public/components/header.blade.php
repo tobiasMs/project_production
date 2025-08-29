@@ -21,6 +21,11 @@
                                 </a>
                             </li>
                         </ul>
+                        <ul class="nav-center" style="position: absolute; left: 55%; top: 50%; transform: translate(-50%, -50%); list-style: none; margin: 0; padding: 0;">
+                            <li>
+                                <span id="realtime-clock" style="font-size: 18px; font-style: italic; font-weight: bold;"></span>
+                            </li>
+                        </ul>
                         <ul class="nav-right">
                             <li class="header-notification">
                                 <div class="dropdown-primary dropdown">
@@ -75,7 +80,7 @@
                                     </div>
                                     <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                                         <li>
-                                            <a href="user-profile.htm">
+                                            <a href="{{ route('profile.profile') }}">
                                                 <i class="feather icon-user"></i> Profile
                                             </a>
                                         </li>

@@ -129,6 +129,7 @@
 
   gtag('config', 'UA-23581568-13');
 </script>
+@stack('auth-scripts')
 </body>
 
 </html>
