@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Application\ProfileController;
+use App\Http\Controllers\Application\Master\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,11 +66,11 @@ Route::middleware('auth')->group(function () {
     });
 
     // Insert Master LLL
-    Route::prefix('masterLLL')->name('lll.')->group(function(){
-        Route::get('/', [ProfileController::class, 'index'])->name('index');
+    Route::prefix('master')->name('master.')->group(function(){
+        Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::put('/', [ProfileController::class, 'update'])->name('update');
-        Route::destroy('/', [ProfileController::class, 'delete'])->name('delete');
-        Route::get('/show', [ProfileController::class, 'show'])->name('show');
+        // Route::destroy('/', [ProfileController::class, 'delete'])->name('delete');
+        Route::get('/data', [ProfileController::class, 'data'])->name('data');
     });
 
     // Logout

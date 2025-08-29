@@ -1,0 +1,68 @@
+@extends('layouts.public.app')
+@section('title', 'Master LLL')
+@section('content')
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header">
+            <h3>List Product</h3>
+            <div class="d-flex justify-content-end">
+                <a
+                {{-- href="{{ route('product.create') }}" --}}
+                class="btn btn-success"
+                style="color: #fff;">
+                    <i class="feather icon-plus"></i>| Add New Product
+                </a>
+            </div>
+        </div>
+        <div class="card-block">
+            <div class="table-responsive dt-responsive">
+                <table id="product" class="table table-striped table-bordered nowrap">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                            <th>Start date</th>
+                            <th>Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                            <th>Start date</th>
+                            <th>Salary</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- DOM/Jquery table end -->
+    @endsection
+@push('custom_script')
+<script>
+    $(document).ready(function() {
+        $('#product').DataTable({
+            "processing": true,
+            "serverSide": true,
+            // "ajax": "{{ route('product.data') }}",
+            "columns": [
+                { "data": "name" },
+                { "data": "position" },
+                { "data": "office" },
+                { "data": "age" },
+                { "data": "start_date" },
+                { "data": "salary" }
+            ]
+        });
+    });
+</script>
+@endpush
