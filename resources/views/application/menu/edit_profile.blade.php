@@ -1,6 +1,5 @@
 @extends('layouts.public.app')
 @section('title', 'Profile')
-
 @section('content')
     <div class="col-sm-12">
         <!-- Basic Inputs Validation start -->
