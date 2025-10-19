@@ -66,11 +66,11 @@ Route::middleware('auth')->group(function () {
     });
 
     // Insert Master LLL
-    Route::prefix('master')->name('master.')->group(function(){
+    Route::prefix('product')->name('product.')->group(function(){
         Route::get('/', [ProductController::class, 'index'])->name('index');
-        Route::put('/', [ProfileController::class, 'update'])->name('update');
-        // Route::destroy('/', [ProfileController::class, 'delete'])->name('delete');
-        Route::get('/data', [ProfileController::class, 'data'])->name('data');
+        Route::post('/', [ProductController::class, 'insert'])->name('store');
+        Route::get('/tambah', [ProductController::class, 'tambah'])->name('add');
+        Route::get('/data', [ProductController::class, 'data'])->name('data');
     });
 
     // Logout
