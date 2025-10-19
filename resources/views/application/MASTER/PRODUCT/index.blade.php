@@ -1,46 +1,45 @@
 @extends('layouts.public.app')
-@section('title', 'Master LLL')
+@section('title', 'Insert Master')
 @section('content')
-<div class="col-sm-12">
+<div class="col-sm-12 d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="card">
         <div class="card-header">
-            <h3>List Product</h3>
-            <div class="d-flex justify-content-end">
+            <h3>Add Product</h3>
+            <div class="d-flex">
                 <a
-                {{-- href="{{ route('product.create') }}" --}}
-                class="btn btn-success"
+                href="{{ route('product.add') }}"
+                class="btn btn-primary"
                 style="color: #fff;">
-                    <i class="feather icon-plus"></i>| Add New Product
+                    <i class="feather icon-plus"></i> Add Master Product
                 </a>
             </div>
         </div>
-        <div class="card-block">
-            <div class="table-responsive dt-responsive">
-                <table id="product" class="table table-striped table-bordered nowrap">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
-                </table>
+        <div class="card-block d-flex justify-content-center">
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table id="productTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Gambar</th>
+                                <th>Nama Produk</th>
+                                <th>ID Produk</th>
+                                <th>Kode 1</th>
+                                <th>Kode 2</th>
+                                <th>Kode 3</th>
+                                <th>Kode 4</th>
+                                <th>Default UOM</th>
+                                <th>Lot</th>
+                                <th>PO</th>
+                                <th>Deskripsi</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Data will be populated by DataTables JavaScript --}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -48,21 +47,77 @@
         <!-- DOM/Jquery table end -->
     @endsection
 @push('custom_script')
-<script>
-    $(document).ready(function() {
-        $('#product').DataTable({
-            "processing": true,
-            "serverSide": true,
-            // "ajax": "{{ route('product.data') }}",
-            "columns": [
-                { "data": "name" },
-                { "data": "position" },
-                { "data": "office" },
-                { "data": "age" },
-                { "data": "start_date" },
-                { "data": "salary" }
-            ]
+        <script>
+           $(function() {
+            $('#productTable').DataTable({
+                //
+                // === PERUBAHAN DIMULAI DI SINI ===
+                //
+                processing: true, // Menampilkan indikator loading
+                serverSide: false, // Set ke false jika data dimuat sekaligus. Set true jika menggunakan pagination server-side.
+
+                // 1. Menggunakan AJAX untuk mengambil data dari route 'data'
+                ajax: '{{ route('product.data') }}',
+
+                // 2. Mendefinisikan kolom sesuai dengan nama kolom dari database
+                columns: [
+                    {
+                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Penomoran otomatis
+                        },
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'picture', // diganti dari 'gambar_produk'
+                        render: function(data) {
+                            // Jika ada gambar, tampilkan. Jika tidak, tampilkan placeholder.
+                            const imageUrl = data ? `{{ asset('') }}${data}` : 'https://placehold.co/100x100/EBF4FA/313131?text=No+Image';
+                            return `<img src="${imageUrl}" alt="Gambar Produk" width="100" class="img-thumbnail">`;
+                        },
+                        orderable: false,
+                        searchable: false
+                    },
+                    { data: 'nama_product' },
+                    { data: 'id_product' },
+                    { data: 'subcode01' },
+                    { data: 'subcode02' },
+                    { data: 'subcode03' },
+                    { data: 'subcode04' },
+                    { data: 'uom' },
+                    { data: 'lot' },
+                    { data: 'po' },
+                    { data: 'description' },
+                    {
+                        data: 'status_active',
+                        render: function(data) {
+                            if (data === 'Aktif' || data === 1 || data === '1') { // Cek beberapa kemungkinan nilai 'Aktif'
+                                return '<span class="badge bg-success">Aktif</span>';
+                            } else {
+                                return '<span class="badge bg-danger">Tidak Aktif</span>';
+                            }
+                        }
+                    }
+                ],
+                responsive: true,
+                layout: {
+                    topStart: {
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                text: 'Cetak Excel',
+                                className: 'btn btn-success'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                text: 'Cetak PDF',
+                                className: 'btn btn-danger'
+                            }
+                        ]
+                    }
+                },
+            });
         });
-    });
-</script>
+        </script>
 @endpush
