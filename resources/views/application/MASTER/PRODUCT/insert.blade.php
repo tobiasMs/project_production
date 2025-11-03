@@ -84,9 +84,9 @@
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
-                <td>
+                {{-- <td>
                     <button type="button" class="btn btn-primary btn-sm" id="pnotify-success">ASDF Click here! <i class="icofont icofont-play-alt-2"></i></button>
-                </td>
+                </td> --}}
             </form>
         </div>
     </div>

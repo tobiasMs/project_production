@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage; // <-- Tambahkan ini
 use Illuminate\Validation\Rule; // <-- Tambahkan ini
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -83,9 +84,9 @@ class ProductController extends Controller
     public function insert(Request $request)
     {
         $data = $data = $request->all();
-        Log::info('Validated data received:', $data);
+        // Log::info('Validated data received:', $data);
         $user = auth()->user();
-        $validatedData = $request->validate([
+        $validatedData = Validator::make($request->all(),[
             'nama_product'        => 'required|string|max:100',
             'id_product'  => 'required|string|max:255|unique:products,id_product',
             'subcode01'       => 'required|string|max:50',
@@ -98,9 +99,18 @@ class ProductController extends Controller
             'description' => 'required|string|max:200',
             'picture'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        Log::info('Validated data received:', $validatedData);
+        if ($validatedData->fails()) {
+            // Ambil pesan error pertama untuk alert
+            Log::info($validatedData->errors()->first());
+        $firstError = $validatedData->errors()->first();
+            return redirect()->back()
+                ->with('error', $firstError)
+                ->withInput();
+        }
+
         try {
-            $dataToInsert = $validatedData;
+            $dataToInsert = $validatedData->validated();
+
             if ($request->hasFile('picture')) {
                 if ($user->profile && Storage::disk('public')->exists($user->profile)) {
                 Storage::disk('public')->delete($user->profile);
