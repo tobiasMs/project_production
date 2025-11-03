@@ -33,6 +33,12 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('files/assets/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('files/assets/css/jquery.mCustomScrollbar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('files/bower_components/pnotify/css/pnotify.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('files/bower_components/pnotify/css/pnotify.brighttheme.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('files/bower_components/pnotify/css/pnotify.buttons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('files/bower_components/pnotify/css/pnotify.history.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('files/bower_components/pnotify/css/pnotify.mobile.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('files/assets/pages/pnotify/notify.css') }}">
     @stack('custom_style')
 </head>
 <!-- Menu sidebar static layout -->
@@ -192,14 +198,43 @@
     <script src="{{asset('files\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('files\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js')}}"></script>
     <!-- Custom js -->
+    <script type="text/javascript" src="{{ asset('files/bower_components/pnotify/js/pnotify.js') }}"></script>
     <script src="{{asset('files/assets/pages/data-table/extensions/buttons/js/extension-btns-custom.js')}}"></script>
     <script src="{{ asset('files\assets\js\pcoded.min.js') }}"></script>
     <script src="{{ asset('files\assets\js\vartical-layout.min.js') }}"></script>
     <script src="{{ asset('files\assets\js\jquery.mCustomScrollbar.concat.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('files\assets\pages\dashboard\crm-dashboard.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('files\assets\js\script.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('files\assets\pages\pnotify\notify.js') }}"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+    @if (session('success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new PNotify({
+                title: 'Success',
+                text: '{{ session('success') }}',
+                icon: 'icofont icofont-check-circle',
+                type: 'success',
+                delay: 3000 // tampil 3 detik
+            });
+        });
+    </script>
+    @endif
+
+    @if (session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new PNotify({
+                title: 'Error',
+                text: '{{ session('error') }}',
+                icon: 'icofont icofont-close-circled',
+                type: 'error',
+                delay: 4000
+            });
+        });
+    </script>
+    @endif
     <script>
         function updateClock() {
             const now = new Date();

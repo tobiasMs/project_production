@@ -50,6 +50,33 @@
     <script type="text/javascript" src="{{ asset('asset_public/assets/js/plugins.js') }}"></script>
     <script type="text/javascript" src="{{ asset('asset_public/assets/js/menu.js') }}"></script>
     <script type="text/javascript" src="{{ asset('asset_public/assets/js/custom.js') }}"></script>
+    @if (session('success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new PNotify({
+                title: 'Success',
+                text: '{{ session('success') }}',
+                icon: 'icofont icofont-check-circle',
+                type: 'success',
+                delay: 3000 // tampil 3 detik
+            });
+        });
+    </script>
+    @endif
+
+    @if (session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new PNotify({
+                title: 'Error',
+                text: '{{ session('error') }}',
+                icon: 'icofont icofont-close-circled',
+                type: 'error',
+                delay: 4000
+            });
+        });
+    </script>
+    @endif
     @stack('public-customscript')
 </body>
 

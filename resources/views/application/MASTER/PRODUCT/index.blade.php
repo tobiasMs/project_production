@@ -18,7 +18,7 @@
         <!-- Column Selectors table start -->
         <div class="card-block">
             <div class="dt-responsive table-responsive">
-                <table id="cbtn-selectors" class="table table-striped table-bordered nowrap productTable">
+                <table id="product-table" class="table table-striped table-bordered nowrap">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -39,23 +39,6 @@
                     <tbody>
 
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>Picture</th>
-                            <th>Name</th>
-                            <th>ID</th>
-                            <th>Code 1</th>
-                            <th>Code 2</th>
-                            <th>Code 3</th>
-                            <th>Code 4</th>
-                            <th>UoM</th>
-                            <th>Lot</th>
-                            <th>PO</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -66,77 +49,80 @@
     @endsection
 @push('custom_script')
 <script>
-           $(function() {
-            $('#productTable').DataTable({
-                //
-                // === PERUBAHAN DIMULAI DI SINI ===
-                //
-                processing: true, // Menampilkan indikator loading
-                serverSide: false, // Set ke false jika data dimuat sekaligus. Set true jika menggunakan pagination server-side.
-
-                // 1. Menggunakan AJAX untuk mengambil data dari route 'data'
-                ajax: '{{ route('product.data') }}',
-
-                // 2. Mendefinisikan kolom sesuai dengan nama kolom dari database
-                columns: [
-                    {
-                        data: null,
-                        render: function (data, type, row, meta) {
-                            return meta.row + 1; // Penomoran otomatis
-                        },
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'picture', // diganti dari 'gambar_produk'
-                        render: function(data) {
-                            // Jika ada gambar, tampilkan. Jika tidak, tampilkan placeholder.
-                            const imageUrl = data ? `{{ asset('') }}${data}` : 'https://placehold.co/100x100/EBF4FA/313131?text=No+Image';
-                            return `<img src="${imageUrl}" alt="Gambar Produk" width="100" class="img-thumbnail">`;
-                        },
-                        orderable: false,
-                        searchable: false
-                    },
-                    { data: 'nama_product' },
-                    { data: 'id_product' },
-                    { data: 'subcode01' },
-                    { data: 'subcode02' },
-                    { data: 'subcode03' },
-                    { data: 'subcode04' },
-                    { data: 'uom' },
-                    { data: 'lot' },
-                    { data: 'po' },
-                    { data: 'description' },
-                    {
-                        data: 'status_active',
-                        render: function(data) {
-                            if (data === 'Aktif' || data === 1 || data === '1') { // Cek beberapa kemungkinan nilai 'Aktif'
-                                return '<span class="badge bg-success">Aktif</span>';
-                            } else {
-                                return '<span class="badge bg-danger">Tidak Aktif</span>';
-                            }
-                        }
-                    }
-                ],
-                responsive: true,
-                layout: {
-                    topStart: {
-                        buttons: [
-                            {
-                                extend: 'excelHtml5',
-                                text: 'Cetak Excel',
-                                className: 'btn btn-success'
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                text: 'Cetak PDF',
-                                className: 'btn btn-danger'
-                            }
-                        ]
-                    }
+$(document).ready(function () {
+    $('#product-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ route('product.data') }}",
+            type: "GET",
+            dataSrc: "data"
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
-            });
-        });
-        </script>
+                orderable: false,
+                className: "text-center"
+            },
+            {
+                data: 'picture',
+                render: function (data) {
+                    if (data) {
+                        return `<img src="/${data}" width="80" height="80" style="object-fit:cover; border-radius:6px"/>`;
+                    }
+                    return '-';
+                },
+                orderable: false,
+                searchable: false,
+                className: "text-center"
+            },
+            { data: 'nama_product', name: 'nama_product' },
+            { data: 'id_product', name: 'id_product' },
+            { data: 'subcode01', name: 'subcode01' },
+            { data: 'subcode02', name: 'subcode02' },
+            { data: 'subcode03', name: 'subcode03' },
+            { data: 'subcode04', name: 'subcode04' },
+            { data: 'uom', name: 'uom' },
+            { data: 'lot', name: 'lot' },
+            { data: 'po', name: 'po' },
+            { data: 'description', name: 'description' },
+            {
+                data: 'status_active',
+                render: function (data) {
+                    return data == 1
+                        ? '<span class="badge bg-success">Active</span>'
+                        : '<span class="badge bg-secondary">Inactive</span>';
+                },
+                className: "text-center"
+            }
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copyHtml5',
+                text: '<i class="fa fa-copy"></i> Copy',
+                exportOptions: { columns: [0, ':visible'] }
+            },
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fa fa-file-excel"></i> Excel',
+                exportOptions: { columns: ':visible' }
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="fa fa-file-pdf"></i> PDF',
+                exportOptions: { columns: [0, 1, 2, 5] }
+            },
+            'colvis'
+        ],
+        order: [[2, 'asc']],
+        responsive: true
+    });
+});
+</script>
+
 
 @endpush

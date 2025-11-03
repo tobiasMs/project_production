@@ -5,12 +5,12 @@
     <div class="card" style="width: 100%; max-width: 700px;">
         <div class="card-header">
             <h3>Add Product</h3>
-            <div class="d-flex">
-                <a
-                href="{{ route('product.index') }}"
-                class="btn btn-primary"
-                style="color: #fff;">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{{ route('product.index') }}" class="btn btn-primary text-white">
                     <i class="feather icon-arrow-left"></i> Back
+                </a>
+                <a href="{{ route('product.index') }}" class="btn btn-info text-white">
+                    <i class="feather icon-upload"></i> Upload Product
                 </a>
             </div>
         </div>
@@ -84,6 +84,9 @@
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" id="pnotify-success">ASDF Click here! <i class="icofont icofont-play-alt-2"></i></button>
+                </td>
             </form>
         </div>
     </div>

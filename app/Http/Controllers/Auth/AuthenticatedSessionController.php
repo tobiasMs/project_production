@@ -20,12 +20,12 @@ class AuthenticatedSessionController extends Controller
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/dashboard')
+                ->with('success', 'Login Berhasil! Selamat datang, ' . Auth::user()->name . '.');
         }
 
-        return back()->withErrors([
-            'name' => 'Login gagal.',
-        ]);
+        return back()->with('error', 'Username atau Password yang Anda masukkan salah.')
+                     ->withInput($request->only('name'));
     }
 
     public function destroy(Request $request)
@@ -33,6 +33,6 @@ class AuthenticatedSessionController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect('/')->with('success', 'Anda telah berhasil logout.');
     }
 }

@@ -16,25 +16,65 @@ class ProductController extends Controller
         return view('application.MASTER.PRODUCT.index');
     }
 
-    public function data(Request $request){
-        $query = DB::connection('mysql')
-            ->table('products')
-            ->select('nama_product',
-                        'id_product',
-                        'subcode01',
-                        'subcode02',
-                        'subcode03',
-                        'subcode04',
-                        'uom', 'lot',
-                        'po', 'description',
-                        'picture',
-                        'creation_date',
-                        'creation_user',
-                        'status_active')
-            ->get();
+    public function data(Request $request)
+{
+    $perPage = $request->input('length', 50);
+    $page = ($request->input('start', 0) / $perPage) + 1;
 
-        return response()->json(['data' => $query]);
+    $columns = [
+        'nama_product',
+        'id_product',
+        'subcode01',
+        'subcode02',
+        'subcode03',
+        'subcode04',
+        'uom',
+        'lot',
+        'po',
+        'description',
+        'picture',
+        'creation_date',
+        'creation_user',
+        'status_active'
+    ];
+
+    // --- ORDERING (fix index 0-based) ---
+    $orderColumnIndex = $request->input('order.0.column', 0);
+    $orderDir = $request->input('order.0.dir', 'asc');
+    $orderColumn = $columns[$orderColumnIndex] ?? 'nama_product';
+
+    // --- SEARCH (global search dari DataTables) ---
+    $searchValue = $request->input('search.value');
+
+    $query = DB::table('products')->select($columns);
+
+    if (!empty($searchValue)) {
+        $query->where(function ($q) use ($columns, $searchValue) {
+            foreach ($columns as $col) {
+                $q->orWhere($col, 'like', "%{$searchValue}%");
+            }
+        });
     }
+    $query->orderBy($orderColumn, $orderDir);
+
+    $totalFiltered = $query->count();
+
+    $results = $query
+        ->offset(($page - 1) * $perPage)
+        ->limit($perPage)
+        ->get();
+
+    $totalData = DB::table('products')->count();
+
+    return response()->json([
+        'draw' => intval($request->input('draw')),
+        'recordsTotal' => $totalData,
+        'recordsFiltered' => $totalFiltered,
+        'data' => $results,
+    ]);
+}
+
+
 
     public function tambah(Request $request){
         return view('application.MASTER.PRODUCT.insert');
@@ -78,7 +118,5 @@ class ProductController extends Controller
         }
     }
 
-    public function create(){
-        return view('application.MASTER.PRODUCT.insert');
-    }
+
 }

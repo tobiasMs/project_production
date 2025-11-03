@@ -129,6 +129,38 @@
 
   gtag('config', 'UA-23581568-13');
 </script>
+@if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}'
+            });
+        </script>
+    @endif
+
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops... Terjadi Kesalahan!',
+                // Menggabungkan semua pesan error validasi menjadi satu
+                html: '@foreach ($errors->all() as $error) <p>{{ $error }}</p> @endforeach'
+            });
+        </script>
+    @endif
 @stack('auth-scripts')
 </body>
 

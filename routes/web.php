@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::post('/', [ProductController::class, 'insert'])->name('store');
         Route::get('/tambah', [ProductController::class, 'tambah'])->name('add');
-        Route::get('/data', [ProductController::class, 'data'])->name('data');
+        Route::get('/product/data', [ProductController::class, 'data'])->name('data');
     });
 
     // Logout
